@@ -173,11 +173,7 @@ extern void __si_init(void);
 extern void __irq_init(void);
 extern void __lwp_start_multitasking(void);
 extern void __timesystem_init(void);
-extern void __memlock_init(void);
 extern void __libc_init(int);
-
-extern void __libogc_malloc_lock( struct _reent *ptr );
-extern void __libogc_malloc_unlock( struct _reent *ptr );
 
 extern void __exception_console(void);
 extern void __exception_printf(const char *str, ...);
@@ -298,8 +294,6 @@ static void __init_syscall_array() {
 	__syscalls.lock_close = __libogc_lock_close;
 	__syscalls.lock_release = __libogc_lock_release;
 	__syscalls.lock_acquire = __libogc_lock_acquire;
-	__syscalls.malloc_lock = __libogc_malloc_lock;
-	__syscalls.malloc_unlock = __libogc_malloc_unlock;
 	__syscalls.exit = __libogc_exit;
 	__syscalls.gettod_r = __libogc_gettod_r;
 
@@ -1068,7 +1062,6 @@ void SYS_Init()
 	__si_init();
 	__lwp_thread_coreinit();
 	__lwp_sysinit();
-	__memlock_init();
 	__lwp_mqbox_init();
 	__lwp_sema_init();
 	__lwp_mutex_init();
